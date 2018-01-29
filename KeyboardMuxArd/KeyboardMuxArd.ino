@@ -17,7 +17,7 @@
 #define COLUMN2 8
 #define COLUMN3 6
 
-int keyIsPress=LOW;
+//int keyIsPress=LOW;
 int keyLastState=LOW;
 
 void setup() {
@@ -42,7 +42,7 @@ void loop() {
 
   if (keyPress != -1){
     Serial.print("keyPress:");
-    Serial.println(keyPress);
+    Serial.println((char)keyPress);
     
   }
 }
@@ -69,41 +69,33 @@ int scanKeyboard(){
       digitalWrite(COLUMN2, HIGH);
       digitalWrite(COLUMN3, LOW);
     }
-    j=i*10;
+    j=i*4;
     if (digitalRead(ROW1) == LOW){
-      k=j+1;  
+      k=j;  
     }
     if (digitalRead(ROW2) == LOW){
-      k=j+2;  
+      k=j+1;  
     }
     if (digitalRead(ROW3) == LOW){
-      k=j+3;  
+      k=j+2;  
     }
     if (digitalRead(ROW4) == LOW){
-      k=j+4;  
+      k=j+3;  
     }
   }
-  if (k>0){
-    //keyIsPress=HIGH;
-    return(k);
-  }else{
-    //keyIsPress=LOW;
-    return(-1);
-  }
-  
   return(k);
 }
 
 int grabKey(){
   int scanKeyReturn;
+  char convKey[] = {'1','4','7','*','2','5','8','0','3','6','9','#'};
   scanKeyReturn = scanKeyboard();
-  //Serial.println(scanKeyReturn);
   if (scanKeyReturn != -1){
     if (keyLastState == LOW){
       //Serial.print("KeyIsPress");
       //Serial.println(scanKeyReturn);
       keyLastState = HIGH;
-      return(scanKeyReturn);
+      return(convKey[scanKeyReturn]);
     }else{
       return (-1);
     }
