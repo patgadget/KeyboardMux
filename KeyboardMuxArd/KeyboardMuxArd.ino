@@ -19,14 +19,63 @@
 
 void setup() {
   // put your setup code here, to run once:
-  pinMode(ROW1, INPUT);
-  pinMode(ROW2, INPUT);
-  pinMode(ROW3, INPUT);
-  pinMode(ROW4, INPUT);
-  
+  digitalWrite(COLUMN1, LOW);
+  digitalWrite(COLUMN2, LOW);
+  digitalWrite(COLUMN3, LOW);
+  pinMode(ROW1, INPUT_PULLUP);
+  pinMode(ROW2, INPUT_PULLUP);
+  pinMode(ROW3, INPUT_PULLUP);
+  pinMode(ROW4, INPUT_PULLUP);
+  pinMode(COLUMN1, OUTPUT);
+  pinMode(COLUMN2, OUTPUT);
+  pinMode(COLUMN3, OUTPUT);
+  Serial.begin(115200);
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
+  int keyPress;
+  keyPress = scanKeyboard();
+  if (keyPress != -1){
+    Serial.println(keyPress);
+  }
+}
 
+int scanKeyboard(){
+  digitalWrite(COLUMN1, HIGH);
+  digitalWrite(COLUMN2, HIGH);
+  digitalWrite(COLUMN3, HIGH);
+  int i,j,k;
+  k=-1;// No key press
+  for (i=0;i<3;i++){
+    if (i == 0){
+      digitalWrite(COLUMN1, LOW);
+      digitalWrite(COLUMN2, HIGH);
+      digitalWrite(COLUMN3, HIGH);
+    }
+    if (i == 1){
+      digitalWrite(COLUMN1, HIGH);
+      digitalWrite(COLUMN2, LOW);
+      digitalWrite(COLUMN3, HIGH);
+    }
+    if (i == 2){
+      digitalWrite(COLUMN1, HIGH);
+      digitalWrite(COLUMN2, HIGH);
+      digitalWrite(COLUMN3, LOW);
+    }
+    j=i*10;
+    if (digitalRead(ROW1) == LOW){
+      k=j+1;  
+    }
+    if (digitalRead(ROW2) == LOW){
+      k=j+2;  
+    }
+    if (digitalRead(ROW3) == LOW){
+      k=j+3;  
+    }
+    if (digitalRead(ROW4) == LOW){
+      k=j+4;  
+    }
+  }
+  return(k);
 }
