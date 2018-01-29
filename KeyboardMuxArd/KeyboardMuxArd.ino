@@ -18,7 +18,6 @@
 #define COLUMN3 6
 
 int keyIsPress=LOW;
-int keyIsUnpress=HIGH;
 int keyLastState=LOW;
 
 void setup() {
@@ -85,13 +84,11 @@ int scanKeyboard(){
     }
   }
   if (k>0){
-    keyIsPress=HIGH;
+    //keyIsPress=HIGH;
     return(k);
-    //keyIsUnpress=LOW;
   }else{
-    keyIsPress=LOW;
+    //keyIsPress=LOW;
     return(-1);
-    //keyIsUnpress=HIGH;
   }
   
   return(k);
@@ -101,9 +98,9 @@ int grabKey(){
   int scanKeyReturn;
   scanKeyReturn = scanKeyboard();
   //Serial.println(scanKeyReturn);
-  if (keyIsPress == HIGH){
+  if (scanKeyReturn != -1){
     if (keyLastState == LOW){
-      //Serial.println("KeyIsPress");
+      //Serial.print("KeyIsPress");
       //Serial.println(scanKeyReturn);
       keyLastState = HIGH;
       return(scanKeyReturn);
