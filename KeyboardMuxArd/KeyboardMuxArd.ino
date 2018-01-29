@@ -17,6 +17,10 @@
 #define COLUMN2 8
 #define COLUMN3 6
 
+int keyIsPress=LOW;
+int keyIsUnpress=HIGH;
+int keyLastState=LOW;
+
 void setup() {
   // put your setup code here, to run once:
   digitalWrite(COLUMN1, LOW);
@@ -35,9 +39,12 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
   int keyPress;
-  keyPress = scanKeyboard();
+  keyPress = grabKey();
+
   if (keyPress != -1){
+    Serial.print("keyPress:");
     Serial.println(keyPress);
+    
   }
 }
 
@@ -77,5 +84,38 @@ int scanKeyboard(){
       k=j+4;  
     }
   }
+  if (k>0){
+    keyIsPress=HIGH;
+    return(k);
+    //keyIsUnpress=LOW;
+  }else{
+    keyIsPress=LOW;
+    return(-1);
+    //keyIsUnpress=HIGH;
+  }
+  
   return(k);
 }
+
+int grabKey(){
+  int scanKeyReturn;
+  scanKeyReturn = scanKeyboard();
+  //Serial.println(scanKeyReturn);
+  if (keyIsPress == HIGH){
+    if (keyLastState == LOW){
+      //Serial.println("KeyIsPress");
+      //Serial.println(scanKeyReturn);
+      keyLastState = HIGH;
+      return(scanKeyReturn);
+    }else{
+      return (-1);
+    }
+  }else{
+    keyLastState = LOW;
+    return (-1);
+  }
+  
+}
+  
+
+
